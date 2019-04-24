@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.RwDataLogMapper">
+    <!-- 自动生成,请修改 D_RW_DATA_LOG.xml -->
+    <resultMap id="BaseResultMap" type="com.xiaowei.mh.mapper.dataobject.RwDataLogDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SIGNAL_SNR" property="signalSnr" jdbcType="REAL" javaType="Float"/>
+        <result column="SIGNAL_RSRP" property="signalRsrp" jdbcType="REAL" javaType="Float"/>
+        <result column="SIGNAL_RSSI" property="signalRssi" jdbcType="REAL" javaType="Float"/>
+        <result column="PH" property="ph" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CMD" property="cmd" jdbcType="VARCHAR" javaType="String"/>
+        <result column="RDO" property="rdo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="TSS" property="tss" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CCID" property="ccid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="IMEI" property="imei" jdbcType="VARCHAR" javaType="String"/>
+        <result column="NH3_N" property="nh3N" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEPTH" property="depth" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEV_ID" property="devId" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LEVEL" property="level" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" javaType="String"/>
+        <result column="POWER_PCT" property="powerPct" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FAULT_INFO" property="faultInfo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LEVEL_SHOW" property="levelShow" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" javaType="String"/>
+        <result column="POWER_TYPE" property="powerType" jdbcType="VARCHAR" javaType="String"/>
+        <result column="COLLECT_DAY" property="collectDay" jdbcType="VARCHAR" javaType="String"/>
+        <result column="COLLECT_MIN" property="collectMin" jdbcType="VARCHAR" javaType="String"/>
+        <result column="COLLECT_HOUR" property="collectHour" jdbcType="VARCHAR" javaType="String"/>
+        <result column="COLLECT_YEAR" property="collectYear" jdbcType="VARCHAR" javaType="String"/>
+        <result column="COLLECT_MONTH" property="collectMonth" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CONDUCTIVITY" property="conductivity" jdbcType="VARCHAR" javaType="String"/>
+        <result column="IN_TEMPERATURE" property="inTemperature" jdbcType="VARCHAR" javaType="String"/>
+        <result column="OUT_TEMPERATURE" property="outTemperature" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LAC" property="lac" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CELL_ID" property="cellId" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_1" property="fault1" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_2" property="fault2" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_3" property="fault3" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_4" property="fault4" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_5" property="fault5" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_6" property="fault6" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_7" property="fault7" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_8" property="fault8" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DATA_TYPE" property="dataType" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="LAST_COLLECT_TIME" property="lastCollectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,SIGNAL_SNR,SIGNAL_RSRP,SIGNAL_RSSI,PH,CMD,RDO,TSS,CCID,IMEI,NH3_N,DEPTH,DEV_ID,LEVEL,DEL_FLAG,CREATE_BY,DEVICE_NO,LATITUDE,POWER_PCT,UPDATE_BY,FAULT_INFO,LEVEL_SHOW,LONGITUDE,POWER_TYPE,COLLECT_DAY,COLLECT_MIN,COLLECT_HOUR,COLLECT_YEAR,COLLECT_MONTH,CONDUCTIVITY,IN_TEMPERATURE,OUT_TEMPERATURE,LAC,CELL_ID,FAULT_1,FAULT_2,FAULT_3,FAULT_4,FAULT_5,FAULT_6,FAULT_7,FAULT_8,DATA_TYPE,CREATE_TIME,UPDATE_TIME,COLLECT_TIME,LAST_COLLECT_TIME
+    </sql>
+
+    <select id="getLatestLogByNo" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_rw_data_log
+        where
+        device_no=#{deviceNo,jdbcType=VARCHAR}
+        order by id desc
+        limit 1
+    </select>
+    <select id="faultTodayRw" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_rw_data_log
+        where
+        collect_time>#{beginTime}
+        and #{endTime}>collect_time
+        and fault_info>0
+    </select>
+    <select id="todayList" parameterType="map" resultType="date">
+        select collect_time from d_rw_data_log
+        where device_no=#{deviceNo}
+        and collect_time>#{beginTime}
+        and #{endTime}>collect_time
+    </select>
+    <select id="rwPowerList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_rw_data_log
+        where
+        device_no=#{deviceNo}
+        and collect_time>#{beginTime}
+        and #{endTime}>collect_time
+        limit 10
+    </select>
+</mapper>

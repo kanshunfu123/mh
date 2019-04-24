@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.CwDataLogMapper">
+    <!-- 自动生成,请修改 D_CW_DATA_LOG.xml -->
+    <resultMap id="BaseResultMap" type="com.xiaowei.mh.mapper.dataobject.CwDataLogDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="PH" property="ph" jdbcType="REAL" javaType="Float"/>
+        <result column="OXYGEN" property="oxygen" jdbcType="REAL" javaType="Float"/>
+        <result column="CHLORINE" property="chlorine" jdbcType="REAL" javaType="Float"/>
+        <result column="SIGNAL_SNR" property="signalSnr" jdbcType="REAL" javaType="Float"/>
+        <result column="TURBIDITY" property="turbidity" jdbcType="REAL" javaType="Float"/>
+        <result column="SIGNAL_RSRP" property="signalRsrp" jdbcType="REAL" javaType="Float"/>
+        <result column="SIGNAL_RSSI" property="signalRssi" jdbcType="REAL" javaType="Float"/>
+        <result column="TEMPERATURE" property="temperature" jdbcType="REAL" javaType="Float"/>
+        <result column="CCID" property="ccid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="IMEI" property="imei" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEV_ID" property="devId" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FAULT_INFO" property="faultInfo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LAC" property="lac" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CELL_ID" property="cellId" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_1" property="fault1" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_2" property="fault2" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_3" property="fault3" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_4" property="fault4" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_5" property="fault5" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_6" property="fault6" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_7" property="fault7" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_8" property="fault8" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DEV_TYPE" property="devType" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DATA_TYPE" property="dataType" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="COLLECTION_STS" property="collectionSts" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,PH,OXYGEN,CHLORINE,SIGNAL_SNR,TURBIDITY,SIGNAL_RSRP,SIGNAL_RSSI,TEMPERATURE,CCID,IMEI,DEV_ID,DEVICE_NO,FAULT_INFO,LAC,CELL_ID,FAULT_1,FAULT_2,FAULT_3,FAULT_4,FAULT_5,FAULT_6,FAULT_7,FAULT_8,DEV_TYPE,DATA_TYPE,COLLECTION_STS,CREATE_TIME,COLLECT_TIME
+    </sql>
+    <select id="getLatestLogByNo" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_cw_data_log
+        where
+        device_no=#{deviceNo,jdbcType=VARCHAR}
+        order by id desc
+        limit 1
+    </select>
+    <select id="faultTodayCw" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_cw_data_log
+        where
+        collect_time>#{beginTime}
+        and #{endTime}>collect_time
+        and fault_info>0
+    </select>
+    <select id="todayList" parameterType="map" resultType="date">
+        select collect_time from d_cw_data_log
+        where device_no=#{deviceNo}
+        and collect_time>#{beginTime}
+        and #{endTime}>collect_time
+    </select>
+    <select id="standardCw" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_cw_data_log
+        where device_no=#{deviceNo}
+        and collect_time>#{beginTime}
+        and #{endTime}>collect_time
+        limit 10
+    </select>
+</mapper>

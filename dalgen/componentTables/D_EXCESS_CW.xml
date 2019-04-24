@@ -1,0 +1,74 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="D_EXCESS_CW" physicalName="D_EXCESS_CW" remark="饮用水超标数据统计">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:D_EXCESS_CW">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO D_EXCESS_CW(
+            
+            AREA_ID
+            ,CITY_ID
+            ,PROVINCE_ID
+            ,PH
+            ,OXYGEN
+            ,CHLORINE
+            ,TURBIDITY
+            ,AREA_NAME
+            ,CITY_NAME
+            ,DEVICE_NO
+            ,PROVINCE_NAME
+            ,CREATE_TIME
+            ,COLLECT_TIME
+        )VALUES(
+            
+            #{areaId,jdbcType=BIGINT}
+            ,#{cityId,jdbcType=BIGINT}
+            ,#{provinceId,jdbcType=BIGINT}
+            ,#{ph,jdbcType=REAL}
+            ,#{oxygen,jdbcType=REAL}
+            ,#{chlorine,jdbcType=REAL}
+            ,#{turbidity,jdbcType=REAL}
+            ,#{areaName,jdbcType=VARCHAR}
+            ,#{cityName,jdbcType=VARCHAR}
+            ,#{deviceNo,jdbcType=VARCHAR}
+            ,#{provinceName,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{collectTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:D_EXCESS_CW">
+            UPDATE D_EXCESS_CW
+            SET
+                    AREA_ID         = #{areaId,jdbcType=BIGINT}
+                    ,CITY_ID         = #{cityId,jdbcType=BIGINT}
+                    ,PROVINCE_ID     = #{provinceId,jdbcType=BIGINT}
+                    ,PH              = #{ph,jdbcType=REAL}
+                    ,OXYGEN          = #{oxygen,jdbcType=REAL}
+                    ,CHLORINE        = #{chlorine,jdbcType=REAL}
+                    ,TURBIDITY       = #{turbidity,jdbcType=REAL}
+                    ,AREA_NAME       = #{areaName,jdbcType=VARCHAR}
+                    ,CITY_NAME       = #{cityName,jdbcType=VARCHAR}
+                    ,DEVICE_NO       = #{deviceNo,jdbcType=VARCHAR}
+                    ,PROVINCE_NAME   = #{provinceName,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,COLLECT_TIME    = #{collectTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:D_EXCESS_CW">
+            DELETE FROM D_EXCESS_CW
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:D_EXCESS_CW">
+            SELECT * FROM D_EXCESS_CW
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+</table>

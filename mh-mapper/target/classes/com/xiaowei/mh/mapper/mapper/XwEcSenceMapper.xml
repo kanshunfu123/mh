@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.XwEcSenceMapper">
+    <!-- 自动生成,请修改 XW_EC_SENCE.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.XwEcSenceDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="AREA_ID" property="areaId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="CITY_ID" property="cityId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="PROVINCE_ID" property="provinceId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+            <result column="EC_BRAND" property="ecBrand" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+            <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SENCE_UUID" property="senceUuid" jdbcType="VARCHAR" javaType="String"/>
+            <result column="ELEVATOR_USE" property="elevatorUse" jdbcType="VARCHAR" javaType="String"/>
+            <result column="EC_SUPERVISOR" property="ecSupervisor" jdbcType="VARCHAR" javaType="String"/>
+            <result column="ELEVATOR_CODE" property="elevatorCode" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SENCE_SAFE_MAN" property="senceSafeMan" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SERIAL_NUMBER" property="serialNumber" jdbcType="VARCHAR" javaType="String"/>
+            <result column="REGULATORY_UNIT" property="regulatoryUnit" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SENCE_SAFE_PHONE" property="senceSafePhone" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SUPERVISOR_PHONE" property="supervisorPhone" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SENCE_SAFE_COMPANY" property="senceSafeCompany" jdbcType="VARCHAR" javaType="String"/>
+            <result column="EC_CREW" property="ecCrew" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="EC_LOAD" property="ecLoad" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="YEARS_OF_USER" property="yearsOfUser" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="PRODUCT_TIME" property="productTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="SENCE_INSTALL_TIME" property="senceInstallTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+        <resultMap id="ecBrandResult" type="com.xiaowei.mh.mapper.result.v2.EcBrandResult">
+                <result column="brand" property="brand" jdbcType="VARCHAR" javaType="String"/>
+                <result column="num" property="num" jdbcType="INTEGER" javaType="Integer"/>
+        </resultMap>
+        <resultMap id="ecyearResult" type="com.xiaowei.mh.mapper.result.v2.EcYearResult">
+                <result column="year" property="year" jdbcType="INTEGER" javaType="Integer"/>
+                <result column="num" property="num" jdbcType="INTEGER" javaType="Integer"/>
+        </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,AREA_ID,CITY_ID,PROVINCE_ID,DEL_FLAG,EC_BRAND,CREATE_BY,DEVICE_NO,UPDATE_BY,SENCE_UUID,ELEVATOR_USE,EC_SUPERVISOR,ELEVATOR_CODE,SENCE_SAFE_MAN,SERIAL_NUMBER,REGULATORY_UNIT,SENCE_SAFE_PHONE,SUPERVISOR_PHONE,SENCE_SAFE_COMPANY,EC_CREW,EC_LOAD,YEARS_OF_USER,CREATE_TIME,UPDATE_TIME,PRODUCT_TIME,SENCE_INSTALL_TIME
+    </sql>
+    <select id="brandEcByMix" resultMap="ecBrandResult">
+      select ec_brand as brand ,COUNT(id) as num from xw_ec_sence
+            <trim prefix="WHERE" prefixOverrides="AND || OR">
+                    <if test="list!=null and list.size!=0">
+                            and device_no in
+                            <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                                    #{item.deviceNo,jdbcType=VARCHAR}
+                            </foreach>
+                    </if>
+                    <if test="provinceId!=null">
+                            and province_id=#{provinceId}
+                    </if>
+                    <if test="cityId!=null">
+                            and city_id=#{cityId}
+                    </if>
+            </trim>
+            GROUP BY ec_brand
+    </select>
+        <select id="yearEcByMix" resultMap="ecyearResult">
+              select years_of_user as year,COUNT(id) as num from xw_ec_sence
+                <trim prefix="WHERE" prefixOverrides="AND || OR">
+                        <if test="list!=null and list.size!=0">
+                                and device_no in
+                                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                                        #{item.deviceNo,jdbcType=VARCHAR}
+                                </foreach>
+                        </if>
+                        <if test="provinceId!=null">
+                                and province_id=#{provinceId}
+                        </if>
+                        <if test="cityId!=null">
+                                and city_id=#{cityId}
+                        </if>
+                </trim>
+                GROUP BY years_of_user
+        </select>
+
+</mapper>

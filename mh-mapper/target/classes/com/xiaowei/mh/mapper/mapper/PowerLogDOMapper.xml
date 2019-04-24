@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.PowerLogDOMapper">
+    <!-- 自动生成,请修改 D_POWER_LOG.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.PowerLogDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="AREA_ID" property="areaId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="CITY_ID" property="cityId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="PROVINCE_ID" property="provinceId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" javaType="String"/>
+            <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CITY_NAME" property="cityName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_TYPE" property="deviceType" jdbcType="CHAR" javaType="String"/>
+            <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="POWER_LAUNCH" property="powerLaunch" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="POWER_COLLECT" property="powerCollect" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,AREA_ID,CITY_ID,PROVINCE_ID,DEL_FLAG,AREA_NAME,CITY_NAME,DEVICE_NO,DEVICE_TYPE,PROVINCE_NAME,POWER_LAUNCH,POWER_COLLECT,CREATE_TIME,COLLECT_TIME
+    </sql>
+
+
+        <!--插入表:D_POWER_LOG-->
+        <insert id="insert" >
+                    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO D_POWER_LOG(
+            
+            AREA_ID
+            ,CITY_ID
+            ,PROVINCE_ID
+            ,DEL_FLAG
+            ,AREA_NAME
+            ,CITY_NAME
+            ,DEVICE_NO
+            ,DEVICE_TYPE
+            ,PROVINCE_NAME
+            ,POWER_LAUNCH
+            ,POWER_COLLECT
+            ,CREATE_TIME
+            ,COLLECT_TIME
+        )VALUES(
+            
+            #{areaId,jdbcType=BIGINT}
+            ,#{cityId,jdbcType=BIGINT}
+            ,#{provinceId,jdbcType=BIGINT}
+            ,#{delFlag,jdbcType=VARCHAR}
+            ,#{areaName,jdbcType=VARCHAR}
+            ,#{cityName,jdbcType=VARCHAR}
+            ,#{deviceNo,jdbcType=VARCHAR}
+            ,#{deviceType,jdbcType=CHAR}
+            ,#{provinceName,jdbcType=VARCHAR}
+            ,#{powerLaunch,jdbcType=INTEGER}
+            ,#{powerCollect,jdbcType=INTEGER}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{collectTime,jdbcType=TIMESTAMP}
+        )
+        </insert>
+
+        <!--更新表:D_POWER_LOG-->
+        <update id="update" >
+                    UPDATE /*MS-D-POWER-LOG-UPDATE*/ D_POWER_LOG
+            SET
+                    AREA_ID         = #{areaId,jdbcType=BIGINT}
+                    ,CITY_ID         = #{cityId,jdbcType=BIGINT}
+                    ,PROVINCE_ID     = #{provinceId,jdbcType=BIGINT}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=VARCHAR}
+                    ,AREA_NAME       = #{areaName,jdbcType=VARCHAR}
+                    ,CITY_NAME       = #{cityName,jdbcType=VARCHAR}
+                    ,DEVICE_NO       = #{deviceNo,jdbcType=VARCHAR}
+                    ,DEVICE_TYPE     = #{deviceType,jdbcType=CHAR}
+                    ,PROVINCE_NAME   = #{provinceName,jdbcType=VARCHAR}
+                    ,POWER_LAUNCH    = #{powerLaunch,jdbcType=INTEGER}
+                    ,POWER_COLLECT   = #{powerCollect,jdbcType=INTEGER}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,COLLECT_TIME    = #{collectTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </update>
+
+        <!--根据主键删除数据:D_POWER_LOG-->
+        <delete id="deleteById" >
+                    DELETE /*MS-D-POWER-LOG-DELETEBYID*/ FROM D_POWER_LOG
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </delete>
+
+        <!--根据主键获取数据:D_POWER_LOG-->
+        <select id="getById" resultMap="BaseResultMap">
+                    SELECT /*MS-D-POWER-LOG-GETBYID*/  <include refid="Base_Column_List" /> FROM D_POWER_LOG
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </select>
+</mapper>

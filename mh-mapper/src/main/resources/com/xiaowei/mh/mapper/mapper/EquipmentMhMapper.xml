@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.EquipmentMhMapper">
+    <!-- 自动生成,请修改 XW_EQUIPMENT_MH.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.XwEquipmentMhDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="AREA_ID" property="areaId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="CITY_ID" property="cityId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="STREET_ID" property="streetId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="VILLAGE_ID" property="villageId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="PROVINCE_ID" property="provinceId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="AREA" property="area" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CITY" property="city" jdbcType="VARCHAR" javaType="String"/>
+        <result column="STREET" property="street" jdbcType="VARCHAR" javaType="String"/>
+        <result column="VENDOR" property="vendor" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+        <result column="SAFE_MAN" property="safeMan" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PROVINCE" property="province" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SAFE_PHONE" property="safePhone" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_CODE" property="deviceCode" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_DESC" property="deviceDesc" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_NAME" property="deviceName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_TYPE" property="deviceType" jdbcType="VARCHAR" javaType="String"/>
+        <result column="INSTALL_MAN" property="installMan" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SAFE_COMPANY" property="safeCompany" jdbcType="VARCHAR" javaType="String"/>
+        <result column="VILLAGE_NAME" property="villageName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EQUIPMENT_UUID" property="equipmentUuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="HAVE_GAS" property="haveGas" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="HAVE_H2S" property="haveH2s" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="HAVE_WATER_LINE" property="haveWaterLine" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="SETUP_TIME" property="setupTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="PRODUCT_TIME" property="productTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,AREA_ID,CITY_ID,STREET_ID,VILLAGE_ID,PROVINCE_ID,AREA,CITY,STREET,VENDOR,ADDRESS,DEL_FLAG,SAFE_MAN,CREATE_BY,DEVICE_NO,LATITUDE,PROVINCE,UPDATE_BY,LONGITUDE,SAFE_PHONE,DEVICE_CODE,DEVICE_DESC,DEVICE_NAME,DEVICE_TYPE,INSTALL_MAN,SAFE_COMPANY,VILLAGE_NAME,EQUIPMENT_UUID,HAVE_GAS,HAVE_H2S,HAVE_WATER_LINE,SETUP_TIME,CREATE_TIME,UPDATE_TIME,PRODUCT_TIME
+    </sql>
+    <select id="getInfoByNo" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xw_equipment_mh
+        where device_no=#{deviceNo,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

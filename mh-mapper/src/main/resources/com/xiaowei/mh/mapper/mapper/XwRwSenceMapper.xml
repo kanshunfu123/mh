@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.XwRwSenceMapper">
+    <!-- 自动生成,请修改 XW_RW_SENCE.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.XwRwSenceDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="AREA_ID" property="areaId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="CITY_ID" property="cityId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="PROVINCE_ID" property="provinceId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="RW_CODE" property="rwCode" jdbcType="VARCHAR" javaType="String"/>
+            <result column="RW_NAME" property="rwName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="RW_TYPE" property="rwType" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+            <result column="RW_DEPTH" property="rwDepth" jdbcType="VARCHAR" javaType="String"/>
+            <result column="RW_LEVEE" property="rwLevee" jdbcType="VARCHAR" javaType="String"/>
+            <result column="RW_RANGE" property="rwRange" jdbcType="VARCHAR" javaType="String"/>
+            <result column="RW_WIDTH" property="rwWidth" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+            <result column="RW_LENGTH" property="rwLength" jdbcType="VARCHAR" javaType="String"/>
+            <result column="RW_REMARK" property="rwRemark" jdbcType="VARCHAR" javaType="String"/>
+            <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SENCE_UUID" property="senceUuid" jdbcType="VARCHAR" javaType="String"/>
+            <result column="PRINCIPAL_PHONE" property="principalPhone" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SENCE_PRINCIPAL" property="sencePrincipal" jdbcType="VARCHAR" javaType="String"/>
+            <result column="RW_POLLUTE_SOURCE" property="rwPolluteSource" jdbcType="VARCHAR" javaType="String"/>
+            <result column="RW_GRADE" property="rwGrade" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="SENCE_INSTALL_TIME" property="senceInstallTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+        <resultMap id="rwTypeResult" type="com.xiaowei.mh.mapper.result.v2.MhTypeResult">
+                <result column="type" property="type" jdbcType="VARCHAR" javaType="String"/>
+                <result column="num" property="num" jdbcType="INTEGER" javaType="Integer"/>
+        </resultMap>
+        <resultMap id="rwLevelResult" type="com.xiaowei.mh.mapper.result.v2.RwLevelResult">
+                <result column="level" property="level" jdbcType="INTEGER" javaType="Integer"/>
+                <result column="num" property="num" jdbcType="INTEGER" javaType="Integer"/>
+        </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,AREA_ID,CITY_ID,PROVINCE_ID,RW_CODE,RW_NAME,RW_TYPE,DEL_FLAG,RW_DEPTH,RW_LEVEE,RW_RANGE,RW_WIDTH,CREATE_BY,DEVICE_NO,RW_LENGTH,RW_REMARK,UPDATE_BY,SENCE_UUID,PRINCIPAL_PHONE,SENCE_PRINCIPAL,RW_POLLUTE_SOURCE,RW_GRADE,CREATE_TIME,UPDATE_TIME,SENCE_INSTALL_TIME
+    </sql>
+        <select id="typeRwByMix" resultMap="rwTypeResult">
+                select rw_type as type ,COUNT(id) as num from xw_rw_sence
+                <trim prefix="WHERE" prefixOverrides="AND || OR">
+                        <if test="list!=null and list.size!=0">
+                                and device_no in
+                                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                                        #{item.deviceNo,jdbcType=VARCHAR}
+                                </foreach>
+                        </if>
+                        <if test="provinceId!=null">
+                                and province_id=#{provinceId}
+                        </if>
+                        <if test="cityId!=null">
+                                and city_id=#{cityId}
+                        </if>
+                </trim>
+                GROUP BY rw_type
+        </select>
+        <select id="levelRwByMix" resultMap="rwLevelResult">
+                select rw_grade as level,COUNT(id) as num from xw_rw_sence
+                <trim prefix="WHERE" prefixOverrides="AND || OR">
+                        <if test="list!=null and list.size!=0">
+                                and device_no in
+                                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                                        #{item.deviceNo,jdbcType=VARCHAR}
+                                </foreach>
+                        </if>
+                        <if test="provinceId!=null">
+                                and province_id=#{provinceId}
+                        </if>
+                        <if test="cityId!=null">
+                                and city_id=#{cityId}
+                        </if>
+                </trim>
+                GROUP BY rw_grade
+        </select>
+
+</mapper>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.RwStandardLogMapper">
+    <!-- 自动生成,请修改 D_RW_STANDARD_LOG.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.RwStandardLogDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="AREA_ID" property="areaId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="CITY_ID" property="cityId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="PROVINCE_ID" property="provinceId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="PH" property="ph" jdbcType="VARCHAR" javaType="String"/>
+            <result column="OXYGEN" property="oxygen" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+            <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CITY_NAME" property="cityName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+            <result column="TURBIDITY" property="turbidity" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CONDUCTIVITY" property="conductivity" jdbcType="VARCHAR" javaType="String"/>
+            <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,AREA_ID,CITY_ID,PROVINCE_ID,PH,OXYGEN,DEL_FLAG,AREA_NAME,CITY_NAME,DEVICE_NO,TURBIDITY,CONDUCTIVITY,PROVINCE_NAME,CREATE_TIME,COLLECT_TIME
+    </sql>
+    <insert id="insert">
+        insert into d_rw_standard_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                id,
+            </if>
+            <if test="deviceNo!=null and deviceNo!=''">
+                device_no,
+            </if>
+            <if test="ph!=null">
+                ph,
+            </if>
+            <if test="oxygen!=null">
+                oxygen,
+            </if>
+            <if test="turbidity!=null">
+                turbidity,
+            </if>
+            <if test="conductivity!=null">
+                conductivity,
+            </if>
+            <if test="provinceId!=null">
+                province_id,
+            </if>
+            <if test="provinceName!=null and provinceName!=''">
+                province_name,
+            </if>
+            <if test="cityId!=null">
+                city_id,
+            </if>
+            <if test="cityName!=null and cityName!=''">
+                city_name,
+            </if>
+            <if test="areaId!=null">
+                area_id,
+            </if>
+            <if test="areaName!=null and areaName!=''">
+                area_name,
+            </if>
+            <if test="createTime!=null">
+                create_time,
+            </if>
+            <if test="collectTime!=null">
+                collect_time,
+            </if>
+            <if test="delFlag!=null and delFlag!=''">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="deviceNo!=null and deviceNo!=''">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="ph!=null">
+                #{ph,jdbcType=VARCHAR},
+            </if>
+            <if test="oxygen!=null">
+                #{oxygen,jdbcType=VARCHAR},
+            </if>
+            <if test="turbidity!=null">
+                #{turbidity,jdbcType=VARCHAR},
+            </if>
+            <if test="conductivity!=null">
+                #{conductivity,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId!=null">
+                #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="provinceName!=null and provinceName!=''">
+                #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId!=null">
+                #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="cityName!=null and cityName!=''">
+                #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaId!=null">
+                #{areaId,jdbcType=BIGINT},
+            </if>
+            <if test="areaName!=null and areaName!=''">
+                #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime!=null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="collectTime!=null">
+                #{collectTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag!=null and delFlag!=''">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="standardCount" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from d_rw_standard_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime}>collect_time
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+</mapper>

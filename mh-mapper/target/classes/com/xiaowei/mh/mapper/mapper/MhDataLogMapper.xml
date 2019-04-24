@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.MhDataLogMapper">
+    <!-- 自动生成,请修改 D_MH_DATA_LOG.xml -->
+    <resultMap id="BaseResultMap" type="com.xiaowei.mh.mapper.dataobject.MhDataLogDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="SIGNAL_SNR" property="signalSnr" jdbcType="REAL" javaType="Float"/>
+        <result column="SIGNAL_RSRP" property="signalRsrp" jdbcType="REAL" javaType="Float"/>
+        <result column="SIGNAL_RSSI" property="signalRssi" jdbcType="REAL" javaType="Float"/>
+        <result column="CMD" property="cmd" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CCID" property="ccid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="IMEI" property="imei" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEV_ID" property="devId" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LEVEL" property="level" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FAULT_INFO" property="faultInfo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LEVEL_SHOW" property="levelShow" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FIRE_GAS_CON" property="fireGasCon" jdbcType="VARCHAR" javaType="String"/>
+        <result column="NETWORK_SIGNAL" property="networkSignal" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ACQUISITION_UUID" property="acquisitionUuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LAC" property="lac" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CELL_ID" property="cellId" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_1" property="fault1" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_2" property="fault2" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_3" property="fault3" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_4" property="fault4" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_5" property="fault5" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_6" property="fault6" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_7" property="fault7" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_8" property="fault8" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="GAS_H2S" property="gasH2s" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="POWER_MH" property="powerMh" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="DATA_TYPE" property="dataType" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="WATER_LINE" property="waterLine" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="TEMPERATURE" property="temperature" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="WELL_OPEN_STS" property="wellOpenSts" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="SWITCH_WATER_LINE" property="switchWaterLine" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="LAST_COLLECT_TIME" property="lastCollectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,SIGNAL_SNR,SIGNAL_RSRP,SIGNAL_RSSI,CMD,CCID,IMEI,DEV_ID,LEVEL,DEVICE_NO,FAULT_INFO,LEVEL_SHOW,FIRE_GAS_CON,NETWORK_SIGNAL,ACQUISITION_UUID,LAC,CELL_ID,FAULT_1,FAULT_2,FAULT_3,FAULT_4,FAULT_5,FAULT_6,FAULT_7,FAULT_8,GAS_H2S,POWER_MH,DATA_TYPE,WATER_LINE,TEMPERATURE,WELL_OPEN_STS,SWITCH_WATER_LINE,CREATE_TIME,COLLECT_TIME,LAST_COLLECT_TIME
+    </sql>
+    <select id="mhHistoryPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from d_mh_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                AND collect_time>#{startTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                AND #{endTime,jdbcType=VARCHAR}>collect_time
+            </if>
+        </trim>
+        order by id desc
+    </select>
+    <select id="mhNext" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from d_mh_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                AND collect_time>#{startTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                AND #{endTime,jdbcType=VARCHAR}>collect_time
+            </if>
+        </trim>
+        order by id desc
+        limit 1 OFFSET #{fetchNum,jdbcType=INTEGER}
+    </select>
+    <select id="getLatestLogByNo" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_mh_data_log
+        where
+        device_no=#{deviceNo,jdbcType=VARCHAR}
+        order by id desc
+        limit 1
+    </select>
+    <select id="getMhStatusByNo" resultType="integer">
+                SELECT
+        (
+        CASE
+        WHEN (
+        UNIX_TIMESTAMP(SYSDATE()) - UNIX_TIMESTAMP(collect_time)
+        ) > #{timeOut,jdbcType=INTEGER}
+        OR collect_time IS NULL THEN
+        - 1
+        ELSE
+        1
+        END
+        ) status
+        FROM
+        d_mh_data_log
+        WHERE
+        device_no = #{deviceNo,jdbcType=VARCHAR}
+        ORDER BY
+        id DESC
+        LIMIT 0,
+        1
+        </select>
+    <select id="onlineRate" parameterType="map" resultType="java.util.Date">
+         <![CDATA[
+       SELECT
+	collect_time
+FROM
+	d_mh_data_log
+WHERE
+	#{beginTime}<=collect_time
+AND collect_time < #{endTime}
+AND device_no = #{deviceNo}
+        ]]>
+    </select>
+    <select id="mhGas" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_mh_data_log
+        <trim prefix="where" prefixOverrides="and">
+            <if test="deviceNo!=null and deviceNo.trim()!=''">
+                device_no =#{deviceNo}
+            </if>
+            <if test="beginTime!=null and beginTime.trim()!=''">
+                <![CDATA[
+             AND #{beginTime}<=collect_time
+               ]]>
+            </if>
+            <if test="endTime!=null and endTime.trim()!=''">
+                <![CDATA[
+            AND collect_time<= #{endTime}
+               ]]>
+            </if>
+            and gas_H2S!=65535
+        </trim>
+    </select>
+    <select id="mhGasYes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_mh_data_log
+        <trim prefix="where" prefixOverrides="and">
+            <if test="deviceNo!=null and deviceNo.trim()!=''">
+                device_no =#{deviceNo}
+            </if>
+            <if test="beginTime!=null and beginTime.trim()!=''">
+                <![CDATA[
+             AND #{beginTime}<=collect_time
+               ]]>
+            </if>
+            <if test="endTime!=null and endTime.trim()!=''">
+                <![CDATA[
+            AND collect_time<= #{endTime}
+               ]]>
+            </if>
+            and gas_H2S!=65535
+        </trim>
+        order by id desc
+        limit 1
+    </select>
+    <select id="faultTodayMh" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_mh_data_log
+        where
+        collect_time>#{beginTime}
+        and #{endTime}>collect_time
+        and fault_info>0
+    </select>
+    <select id="todayList" parameterType="map" resultType="date">
+        select collect_time from d_mh_data_log
+        where device_no=#{deviceNo}
+        and collect_time>#{beginTime}
+        and #{endTime}>collect_time
+    </select>
+    <!--插入新表-->
+    <insert id="insert">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        insert into d_mh_data_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="acquisitionUuid != null">
+                acquisition_uuid,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="ccid != null">
+                ccid,
+            </if>
+            <if test="cmd != null">
+                cmd,
+            </if>
+            <if test="collectTime != null">
+                collect_time,
+            </if>
+            <if test="lastCollectTime != null">
+                last_collect_time,
+            </if>
+            <if test="faultInfo != null">
+                fault_info,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="levelShow != null">
+                level_show,
+            </if>
+            <if test="wellOpenSts != null">
+                well_open_sts,
+            </if>
+            <if test="fireGasCon != null">
+                fire_gas_con,
+            </if>
+            <if test="switchWaterLine != null">
+                switch_water_line,
+            </if>
+            <if test="waterLine != null">
+                water_line,
+            </if>
+            <if test="temperature != null">
+                temperature,
+            </if>
+            <if test="fault1 != null">
+                fault_1,
+            </if>
+            <if test="fault2 != null">
+                fault_2,
+            </if>
+            <if test="fault3 != null">
+                fault_3,
+            </if>
+            <if test="fault5 != null">
+                fault_5,
+            </if>
+            <if test="fault4 != null">
+                fault_4,
+            </if>
+            <if test="fault6 != null">
+                fault_6,
+            </if>
+            <if test="fault7 != null">
+                fault_7,
+            </if>
+            <if test="fault8 != null">
+                fault_8,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="networkSignal != null">
+                network_signal,
+            </if>
+            <if test="powerMh != null">
+                power_mh,
+            </if>
+            <if test="devId != null">
+                dev_id,
+            </if>
+            <if test="imei != null">
+                imei,
+            </if>
+            <if test="lac != null">
+                lac,
+            </if>
+            <if test="cellId != null">
+                cell_id,
+            </if>
+            <if test="signalRsrp != null">
+                signal_RSRP,
+            </if>
+            <if test="signalRssi != null">
+                signal_RSSI,
+            </if>
+            <if test="signalSnr != null">
+                signal_Snr,
+            </if>
+            <if test="dataType != null">
+                data_type,
+            </if>
+            <if test="gasH2s != null">
+                gas_H2S,
+            </if>
+            <if test="humidity != null">
+                humidity,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="acquisitionUuid != null">
+                #{acquisitionUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="ccid != null">
+                #{ccid,jdbcType=VARCHAR},
+            </if>
+            <if test="cmd != null">
+                #{cmd,jdbcType=VARCHAR},
+            </if>
+            <if test="collectTime != null">
+                #{collectTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastCollectTime != null">
+                #{lastCollectTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="faultInfo != null">
+                #{faultInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="levelShow != null">
+                #{levelShow,jdbcType=VARCHAR},
+            </if>
+            <if test="wellOpenSts != null">
+                #{wellOpenSts,jdbcType=INTEGER},
+            </if>
+            <if test="fireGasCon != null">
+                #{fireGasCon,jdbcType=VARCHAR},
+            </if>
+            <if test="switchWaterLine != null">
+                #{switchWaterLine,jdbcType=INTEGER},
+            </if>
+            <if test="waterLine != null">
+                #{waterLine,jdbcType=INTEGER},
+            </if>
+            <if test="temperature != null">
+                #{temperature,jdbcType=INTEGER},
+            </if>
+            <if test="fault1 != null">
+                #{fault1,jdbcType=INTEGER},
+            </if>
+            <if test="fault2 != null">
+                #{fault2,jdbcType=INTEGER},
+            </if>
+            <if test="fault3 != null">
+                #{fault3,jdbcType=INTEGER},
+            </if>
+            <if test="fault5 != null">
+                #{fault5,jdbcType=INTEGER},
+            </if>
+            <if test="fault4 != null">
+                #{fault4,jdbcType=INTEGER},
+            </if>
+            <if test="fault6 != null">
+                #{fault6,jdbcType=INTEGER},
+            </if>
+            <if test="fault7 != null">
+                #{fault7,jdbcType=INTEGER},
+            </if>
+            <if test="fault8 != null">
+                #{fault8,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="networkSignal != null">
+                #{networkSignal,jdbcType=VARCHAR},
+            </if>
+            <if test="powerMh != null">
+                #{powerMh,jdbcType=INTEGER},
+            </if>
+            <if test="devId != null">
+                #{devId,jdbcType=VARCHAR},
+            </if>
+            <if test="imei != null">
+                #{imei,jdbcType=VARCHAR},
+            </if>
+            <if test="lac != null">
+                #{lac,jdbcType=INTEGER},
+            </if>
+            <if test="cellId != null">
+                #{cellId,jdbcType=INTEGER},
+            </if>
+            <if test="signalRsrp != null">
+                #{signalRsrp,jdbcType=REAL},
+            </if>
+            <if test="signalRssi != null">
+                #{signalRssi,jdbcType=REAL},
+            </if>
+            <if test="signalSnr != null">
+                #{signalSnr,jdbcType=REAL},
+            </if>
+            <if test="dataType != null">
+                #{dataType,jdbcType=INTEGER},
+            </if>
+            <if test="gasH2s != null">
+                #{gasH2s,jdbcType=INTEGER},
+            </if>
+            <if test="humidity != null">
+                #{humidity,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="mhPowerList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM d_mh_data_log
+        where
+        device_no=#{deviceNo}
+        and collect_time>#{beginTime}
+        and #{endTime}>collect_time
+        limit 10
+    </select>
+</mapper>

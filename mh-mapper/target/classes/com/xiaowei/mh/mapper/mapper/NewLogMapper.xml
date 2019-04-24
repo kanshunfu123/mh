@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.NewLogMapper">
+    <!-- 自动生成,请修改 D_NEW_LOG.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.NewLogDO">
+            <id column="ID" property="id" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="IMEI" property="imei" jdbcType="VARCHAR" javaType="String"/>
+            <result column="REC_DATA" property="recData" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_ID" property="deviceId" jdbcType="VARCHAR" javaType="String"/>
+            <result column="EVENT_TIME" property="eventTime" jdbcType="VARCHAR" javaType="String"/>
+            <result column="GATEWAY_ID" property="gatewayId" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_TYPE" property="deviceType" jdbcType="VARCHAR" javaType="String"/>
+            <result column="NOTIFY_TYPE" property="notifyType" jdbcType="VARCHAR" javaType="String"/>
+            <result column="REC_TIME" property="recTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,IMEI,REC_DATA,DEVICE_ID,EVENT_TIME,GATEWAY_ID,DEVICE_TYPE,NOTIFY_TYPE,REC_TIME
+    </sql>
+    <insert id="insert">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        insert into d_new_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="notifyType != null">
+                notify_type,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="gatewayId != null">
+                gateway_id,
+            </if>
+            <if test="imei != null">
+                imei,
+            </if>
+            <if test="deviceType != null">
+                device_type,
+            </if>
+            <if test="recTime != null">
+                rec_time,
+            </if>
+            <if test="recData != null">
+                rec_data,
+            </if>
+            <if test="eventTime != null">
+                event_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="notifyType != null">
+                #{notifyType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="gatewayId != null">
+                #{gatewayId,jdbcType=VARCHAR},
+            </if>
+            <if test="imei != null">
+                #{imei,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceType != null">
+                #{deviceType,jdbcType=VARCHAR},
+            </if>
+            <if test="recTime != null">
+                #{recTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="recData != null">
+                #{recData,jdbcType=VARCHAR},
+            </if>
+            <if test="eventTime != null">
+                #{eventTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

@@ -1,0 +1,99 @@
+#################   cloud 初始化参数   ############################
+xiaowei:
+  application: mh-server #应用名
+  port: 8082 #项目端口号
+  ip: 172.16.32.169 #注册中心ip地址
+  eureka-port: 8761 #注册中心端口号
+  security:
+    name: admin # 用户名
+    password: 123456 #密码
+#################   cloud 初始化参数 end  ############################
+
+server:
+  port: ${xiaowei.port}
+  tomcat:
+      uri-encoding: utf-8
+eureka:
+  client:
+#    register-with-eureka: false #表示是否注册自身到eureka服务器
+#    fetch-registry: false  #是否从eureka上获取注册信息
+    service-url:
+      defaultZone: http://${xiaowei.security.name}:${xiaowei.security.password}@${xiaowei.ip}:${xiaowei.eureka-port}/eureka/
+    registry-fetch-interval-seconds: 10 #client间隔多久去拉取服务注册信息，默认为30秒，对于api-gateway，如果要迅速获取服务注册状态，可以缩小该值，比如5秒
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+    lease-renewal-interval-in-seconds: 5 # 该配置指示eureka客户端需要向eureka服务器发送心跳的频率  (Spring Cloud默认该配置是 30s)
+    lease-expiration-duration-in-seconds: 6 # 该配置指示eureka服务器在接收到最后一个心跳之后等待的时间，然后才能从列表中删除此实例 (Spring Cloud默认该配置是 90s)
+#    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+    hostname: ${xiaowei.application}
+    health-check-url-path: /actuator/health
+    metadata-map: #admin 监控检查
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+
+spring:
+  application:
+    name: ${xiaowei.application}
+  datasource:
+    jdbc-url: jdbc:mysql://47.98.54.72:3306/xiaowei_control?useSSL=false&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=TRUE
+    username: root
+    password: W0rdP@$$2018
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    continue-on-error: true
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    hikari:
+      time-between-eviction-runs-millis: 18800 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      minEvictableIdleTimeMillis: 300000 # 配置一个连接在池中最小生存的时间，单位是毫秒
+      default-auto-commit: true #自动提交
+      auto-commit: true #指定updates是否自动提交
+      idle-timeout: 30000 #<!-- 一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟 -->
+      pool-name: DatebookHikariCP #mssHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 60000 #<!-- 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒 -->
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-test-query: select 1
+      # redis lettuce
+  redis:
+    host: 47.98.54.72
+    password: szjx123
+    port: 6379
+    database: 0
+    timeout: 300000
+#    cluster:
+#      nodes: 127.0.0.1:6380,127.0.0.1:6381,127.0.0.1:6382,127.0.0.1:6383,127.0.0.1:6384,127.0.0.1:6385
+#      max-redirects: 3
+    lettuce:
+      shutdown-timeout: 100
+      pool:
+        max-active: 50 # 连接池最大连接数（使用负值表示没有限制） 默认 8
+        max-idle: 20 # 连接池中的最大空闲连接 默认 8
+        max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+        min-idle: 20 # 连接池中的最小空闲连接 默认 0
+  rabbitmq:
+    addresses: 172.16.32.169
+    username: xiaowei
+    password: xiaowei2019!
+    virtual-host: / #连接到代理时要使用的虚拟主机。
+    connection-timeout: 15000
+    port: 5672
+    publisherConfirms: true
+    publisherReturns: true
+    template:
+      mandatory: true #保证监听有效
+    listener:
+      simple:
+        acknowledge-mode: manual #消息手工签收
+        concurrency: 50
+        max-concurrency: 100
+management: # 需要监控的端点
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+      health:
+        show-details: ALWAYS

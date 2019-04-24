@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.FaultLogV2Mapper">
+    <!-- 自动生成,请修改 D_FAULT_LOG.xml -->
+    <resultMap id="BaseResultMap" type="com.xiaowei.mh.mapper.dataobject.FaultLogDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="AREA_ID" property="areaId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="CITY_ID" property="cityId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="PROVINCE_ID" property="provinceId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+        <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CITY_NAME" property="cityName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FAULT_INFO" property="faultInfo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_TYPE" property="deviceType" jdbcType="CHAR" javaType="String"/>
+        <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FAULT_1" property="fault1" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_2" property="fault2" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_3" property="fault3" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_4" property="fault4" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_5" property="fault5" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_6" property="fault6" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_7" property="fault7" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="FAULT_8" property="fault8" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,AREA_ID,CITY_ID,PROVINCE_ID,ADDRESS,DEL_FLAG,AREA_NAME,CITY_NAME,DEVICE_NO,FAULT_INFO,DEVICE_TYPE,PROVINCE_NAME,FAULT_1,FAULT_2,FAULT_3,FAULT_4,FAULT_5,FAULT_6,FAULT_7,FAULT_8,CREATE_TIME,COLLECT_TIME
+    </sql>
+    <select id="todayFaultList" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from d_fault_log
+        where collect_time>#{beginTime}
+        and #{endTime}>collect_time
+        order by id desc
+        limit 100
+    </select>
+
+    <select id="sevenTwoFault" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from d_fault_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+            <if test="deviceType!=null and deviceType!=''">
+                and device_type=#{deviceType}
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime}>collect_time
+            </if>
+        </trim>
+        order by id desc
+    </select>
+
+    <select id="faultSize" parameterType="map" resultType="integer">
+        select
+        count(id)
+        from d_fault_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+            <if test="deviceType!=null and deviceType!=''">
+                and device_type=#{deviceType}
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime}>collect_time
+            </if>
+        </trim>
+    </select>
+</mapper>

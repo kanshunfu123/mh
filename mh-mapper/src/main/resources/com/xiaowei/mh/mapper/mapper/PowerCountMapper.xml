@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.PowerCountMapper">
+    <select id="ecCountAtPowerPctMax" resultType="integer">
+        select count(id) from d_ec_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            and at_power_pct >= 50
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <select id="ecCountAtPowerPctMin" resultType="integer">
+        select count(id) from d_ec_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            and 50>at_power_pct
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <select id="ecCountCtPowerPctMax" resultType="integer">
+        select count(id) from d_ec_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            and ct_power_pct>=50
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <select id="ecCountCtPowerPctMin" resultType="integer">
+        select count(id) from d_ec_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            and 50>ct_power_pct
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <select id="rwCountCtPowerPctMax" resultType="integer">
+        select count(id) from d_rw_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            and power_pct>=50
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <select id="rwCountCtPowerPctMin" resultType="integer">
+        select count(id) from d_rw_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            and 50>power_pct
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <select id="mhCountCtPowerPctMax" resultType="integer">
+        select count(id) from d_mh_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            and power_mh>=50
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <select id="mhCountCtPowerPctMin" resultType="integer">
+        select count(id) from d_mh_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            and 50>power_mh
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <select id="cwCountCtPowerPctMax" resultType="integer">
+        select count(id) from d_cw_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            and power_mh>=50
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <select id="cwCountCtPowerPctMin" resultType="integer">
+        select count(id) from d_cw_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            and 50>power_mh
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+</mapper>

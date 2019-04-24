@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.XwSafeRecordMapper">
+    <!-- 自动生成,请修改 XW_SAFE_RECORD.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.XwSafeRecordDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="AREA_ID" property="areaId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="CITY_ID" property="cityId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="PROVINCE_ID" property="provinceId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+            <result column="SAFE_MAN" property="safeMan" jdbcType="VARCHAR" javaType="String"/>
+            <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CITY_NAME" property="cityName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SAFE_PHONE" property="safePhone" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_TYPE" property="deviceType" jdbcType="CHAR" javaType="String"/>
+            <result column="SAFE_COMPANY" property="safeCompany" jdbcType="VARCHAR" javaType="String"/>
+            <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SAFE_RECORD_UUID" property="safeRecordUuid" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SAFE_YEAR" property="safeYear" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="SAFE_MONTH" property="safeMonth" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="SAFE_TIME" property="safeTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,AREA_ID,CITY_ID,PROVINCE_ID,DEL_FLAG,SAFE_MAN,AREA_NAME,CITY_NAME,CREATE_BY,DEVICE_NO,SAFE_PHONE,DEVICE_TYPE,SAFE_COMPANY,PROVINCE_NAME,SAFE_RECORD_UUID,SAFE_YEAR,SAFE_MONTH,SAFE_TIME,CREATE_TIME
+    </sql>
+    <select id="countByMix" resultType="int">
+        select count(id) from xw_safe_record
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+            <if test="deviceType!=null and deviceType!=''">
+                and device_type=#{deviceType}
+            </if>
+            <if test="safeYear!=null">
+                and safe_year=#{safeYear}
+            </if>
+            <if test="safeMonth!=null">
+                and safe_month=#{safeMonth}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

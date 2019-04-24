@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.XwMhSenceMapper">
+    <!-- 自动生成,请修改 XW_MH_SENCE.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.XwMhSenceDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="AREA_ID" property="areaId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="CITY_ID" property="cityId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="PROVINCE_ID" property="provinceId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="MH_USE" property="mhUse" jdbcType="VARCHAR" javaType="String"/>
+            <result column="MH_CODE" property="mhCode" jdbcType="VARCHAR" javaType="String"/>
+            <result column="MH_LOAD" property="mhLoad" jdbcType="VARCHAR" javaType="String"/>
+            <result column="MH_SIZE" property="mhSize" jdbcType="VARCHAR" javaType="String"/>
+            <result column="MH_TYPE" property="mhType" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+            <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+            <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SENCE_UUID" property="senceUuid" jdbcType="VARCHAR" javaType="String"/>
+            <result column="MH_DIAMETER" property="mhDiameter" jdbcType="VARCHAR" javaType="String"/>
+            <result column="MH_MATERIAL" property="mhMaterial" jdbcType="VARCHAR" javaType="String"/>
+            <result column="TRAFFIC_FLOW" property="trafficFlow" jdbcType="VARCHAR" javaType="String"/>
+            <result column="PRINCIPAL_PHONE" property="principalPhone" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SENCE_PRINCIPAL" property="sencePrincipal" jdbcType="VARCHAR" javaType="String"/>
+            <result column="MH_YEARS" property="mhYears" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="MH_END_TIME" property="mhEndTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="SENCE_INSTALL_TIME" property="senceInstallTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,AREA_ID,CITY_ID,PROVINCE_ID,MH_USE,MH_CODE,MH_LOAD,MH_SIZE,MH_TYPE,DEL_FLAG,CREATE_BY,DEVICE_NO,UPDATE_BY,SENCE_UUID,MH_DIAMETER,MH_MATERIAL,TRAFFIC_FLOW,PRINCIPAL_PHONE,SENCE_PRINCIPAL,MH_YEARS,MH_END_TIME,CREATE_TIME,UPDATE_TIME,SENCE_INSTALL_TIME
+    </sql>
+    <resultMap id="mhYearResult" type="com.xiaowei.mh.mapper.result.v2.MhYearResult">
+        <result column="year" property="year" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="num" property="num" jdbcType="INTEGER" javaType="Integer"/>
+    </resultMap>
+    <resultMap id="mhMaterialResult" type="com.xiaowei.mh.mapper.result.v2.MhMaterialResult">
+        <result column="material" property="material" jdbcType="VARCHAR" javaType="String"/>
+        <result column="num" property="num" jdbcType="INTEGER" javaType="Integer"/>
+    </resultMap>
+    <resultMap id="mhDiameterResult" type="com.xiaowei.mh.mapper.result.v2.MhDiameterResult">
+        <result column="diameter" property="diameter" jdbcType="VARCHAR" javaType="String"/>
+        <result column="num" property="num" jdbcType="INTEGER" javaType="Integer"/>
+    </resultMap>
+    <resultMap id="mhTypeResult" type="com.xiaowei.mh.mapper.result.v2.MhTypeResult">
+        <result column="type" property="type" jdbcType="VARCHAR" javaType="String"/>
+        <result column="num" property="num" jdbcType="INTEGER" javaType="Integer"/>
+    </resultMap>
+    <select id="yearMhByMix" resultMap="mhYearResult">
+        select mh_years as year,COUNT(id) as num from xw_mh_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+        GROUP BY mh_years
+    </select>
+    <select id="materialMhByMix" resultMap="mhMaterialResult">
+        select mh_material as material,COUNT(id) as num from xw_mh_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+        GROUP BY mh_material
+    </select>
+    <select id="diameterMhByMix" resultMap="mhDiameterResult">
+        select mh_diameter as diameter,COUNT(id) as num from xw_mh_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+        GROUP BY mh_diameter
+    </select>
+    <select id="typeMhByMix" resultMap="mhTypeResult">
+        select mh_type as type ,COUNT(id) as num from xw_mh_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+        GROUP BY mh_type
+    </select>
+</mapper>

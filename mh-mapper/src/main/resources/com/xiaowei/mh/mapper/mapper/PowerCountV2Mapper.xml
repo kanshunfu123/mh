@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.PowerCountV2Mapper">
+    <select id="powerCollectMax" resultType="integer">
+        select count(id) from d_power_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            and power_collect>=50
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="deviceType!=null and deviceType!=''">
+                and device_type=#{deviceType}
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="powerCollectMin" resultType="integer">
+        select count(id) from d_power_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            and 50>power_collect
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="deviceType!=null and deviceType!=''">
+                and device_type=#{deviceType}
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="powerLaunchMax" resultType="integer">
+        select count(id) from d_power_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            and power_launch>=50
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="deviceType!=null and deviceType!=''">
+                and device_type=#{deviceType}
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="powerLaunchMin" resultType="integer">
+        select count(id) from d_power_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            and 50>power_launch
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="deviceType!=null and deviceType!=''">
+                and device_type=#{deviceType}
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+</mapper>

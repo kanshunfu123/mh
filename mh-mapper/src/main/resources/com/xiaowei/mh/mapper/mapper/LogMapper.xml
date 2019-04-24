@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.LogMapper">
+    <!-- 自动生成,请修改 D_LOG.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.LogDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="REC_DATA" property="recData" jdbcType="VARCHAR" javaType="String"/>
+            <result column="REC_TIME" property="recTime" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DATA_FLAG" property="dataFlag" jdbcType="CHAR" javaType="String"/>
+            <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_TYPE" property="deviceType" jdbcType="VARCHAR" javaType="String"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,REC_DATA,REC_TIME,DATA_FLAG,DEVICE_NO,DEVICE_TYPE
+    </sql>
+    <insert id="insert">
+        insert into d_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="recTime != null">
+                rec_time,
+            </if>
+            <if test="recData != null">
+                rec_data,
+            </if>
+            <if test="dataFlag != null">
+                data_flag,
+            </if>
+            <if test="deviceType != null">
+                device_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="recTime != null">
+                #{recTime,jdbcType=VARCHAR},
+            </if>
+            <if test="recData != null">
+                #{recData,jdbcType=VARCHAR},
+            </if>
+            <if test="dataFlag != null">
+                #{dataFlag,jdbcType=CHAR},
+            </if>
+            <if test="deviceType != null">
+                #{deviceType,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

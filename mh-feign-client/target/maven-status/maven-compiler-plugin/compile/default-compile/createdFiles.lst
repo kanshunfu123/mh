@@ -1,0 +1,11 @@
+com\xiaowei\feign\client\home\DeviceListFeign.class
+com\xiaowei\feign\client\home\UserDeviceFeign.class
+com\xiaowei\feign\client\MdFeignaaaa$MdFeignaaaaaaaaa.class
+com\xiaowei\feign\client\MdFeignaaaa.class
+com\xiaowei\feign\client\home\HomeFeign.class
+com\xiaowei\feign\client\home\HomeFeign$HomeFeignA.class
+com\xiaowei\feign\client\home\HomeFeignV2$HomeFeignV2A.class
+com\xiaowei\feign\client\home\UserDeviceFeign$UserDeviceFeignA.class
+com\xiaowei\feign\client\config\FeignConfiguration.class
+com\xiaowei\feign\client\home\HomeFeignV2.class
+com\xiaowei\feign\client\home\DeviceListFeign$DeviceListFeignA.class

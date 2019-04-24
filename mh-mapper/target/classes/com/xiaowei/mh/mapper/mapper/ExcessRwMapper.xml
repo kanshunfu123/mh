@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.ExcessRwMapper">
+    <!-- 自动生成,请修改 D_EXCESS_RW.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.ExcessRwDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="AREA_ID" property="areaId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="CITY_ID" property="cityId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="PROVINCE_ID" property="provinceId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="PH" property="ph" jdbcType="VARCHAR" javaType="String"/>
+            <result column="RDO" property="rdo" jdbcType="VARCHAR" javaType="String"/>
+            <result column="TSS" property="tss" jdbcType="VARCHAR" javaType="String"/>
+            <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CITY_NAME" property="cityName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CONDUCTIVITY" property="conductivity" jdbcType="VARCHAR" javaType="String"/>
+            <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,AREA_ID,CITY_ID,PROVINCE_ID,PH,RDO,TSS,AREA_NAME,CITY_NAME,DEVICE_NO,CONDUCTIVITY,PROVINCE_NAME,CREATE_TIME,COLLECT_TIME
+    </sql>
+    <select id="countByMix" resultType="integer">
+        select
+        count(id)
+        from d_excess_rw
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime}>collect_time
+            </if>
+        </trim>
+    </select>
+
+</mapper>

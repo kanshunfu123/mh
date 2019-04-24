@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.HomeMapper">
+    <select id="ecTodayFaultNum" parameterType="map" resultType="integer">
+        select count(id)
+        from d_ec_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+    </select>
+    <select id="mhTodayFaultNum" parameterType="map" resultType="integer">
+        select count(id)
+        from d_mh_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+    </select>
+    <select id="rwTodayFaultNum" parameterType="map" resultType="integer">
+        select count(id)
+        from d_rw_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+    </select>
+    <select id="cwTodayFaultNum" parameterType="map" resultType="integer">
+        select count(id)
+        from d_cw_data_log
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+    </select>
+    <select id="ecTodayFault" parameterType="map" resultMap="TodayFaultResultMap">
+        select device_no,collect_time
+        from d_ec_data_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+        order by id desc limit 1
+    </select>
+    <select id="mhTodayFault" parameterType="map" resultMap="TodayFaultResultMap">
+        select device_no,collect_time
+        from d_mh_data_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+        order by id desc limit 1
+    </select>
+    <select id="rwTodayFault" parameterType="map" resultMap="TodayFaultResultMap">
+        select device_no,collect_time
+        from d_rw_data_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+        order by id desc limit 1
+    </select>
+    <select id="cwTodayFault" parameterType="map" resultMap="TodayFaultResultMap">
+        select device_no,collect_time
+        from d_cw_data_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+        order by id desc limit 1
+    </select>
+    <select id="sevenFaultEc" resultMap="SevenFaultResultMap">
+        select id,collect_time
+        from d_ec_data_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+            and cmd='faultAlarm'
+        </trim>
+    </select>
+    <select id="sevenFaultMh" resultMap="SevenFaultResultMap">
+        select id,collect_time
+        from d_mh_data_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+    </select>
+    <select id="sevenFaultRw" resultMap="SevenFaultResultMap">
+        select id,collect_time
+        from d_rw_data_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+    </select>
+    <select id="sevenFaultCw" resultMap="SevenFaultResultMap">
+        select id,collect_time
+        from d_cw_data_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR} >collect_time
+            </if>
+            and fault_info>0
+        </trim>
+    </select>
+    <resultMap id="TodayFaultResultMap" type="com.xiaowei.mh.mapper.result.TodayFaultResult">
+        <result column="device_no" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="collect_time" property="collectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+    <resultMap id="SevenFaultResultMap" type="com.xiaowei.mh.mapper.result.SevenFaultResult">
+        <result column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="collect_time" property="collectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+</mapper>

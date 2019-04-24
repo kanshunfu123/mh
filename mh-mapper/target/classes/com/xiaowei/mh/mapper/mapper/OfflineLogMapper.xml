@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mh.mapper.mapper.OfflineLogMapper">
+    <!-- 自动生成,请修改 D_OFFLINE_LOG.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mh.mapper.dataobject.OfflineLogDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+        <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CITY_NAME" property="cityName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DEVICE_TYPE" property="deviceType" jdbcType="CHAR" javaType="String"/>
+        <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="AREA_ID" property="areaId" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CITY_ID" property="cityId" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="PROVINCE_ID" property="provinceId" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,DEL_FLAG,AREA_NAME,CITY_NAME,CREATE_BY,DEVICE_NO,DEVICE_TYPE,PROVINCE_NAME,AREA_ID,CITY_ID,PROVINCE_ID,CREATE_TIME,COLLECT_TIME
+    </sql>
+
+
+    <!--插入表:D_OFFLINE_LOG-->
+    <insert id="insert" parameterType="com.xiaowei.mh.mapper.dataobject.OfflineLogDO">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        insert into d_offline_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                id,
+            </if>
+            <if test="deviceType!=null and deviceType!=''">
+                device_type,
+            </if>
+            <if test="deviceNo!=null and deviceNo!=''">
+                device_no,
+            </if>
+            <if test="collectTime!=null">
+                collect_time,
+            </if>
+            <if test="createBy!=null and createBy!=''">
+                create_by,
+            </if>
+            <if test="createTime!=null">
+                create_time,
+            </if>
+            <if test="delFlag!=null and delFlag!=''">
+                del_flag,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="provinceName != null">
+                province_name,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="cityName != null">
+                city_name,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="areaName != null">
+                area_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="deviceType!=null and deviceType!=''">
+                #{deviceType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo!=null and deviceNo!=''">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="collectTime!=null">
+                #{collectTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy!=null and createBy!=''">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime!=null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag!=null and delFlag!=''">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="provinceName != null">
+                #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="cityName != null">
+                #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=INTEGER},
+            </if>
+            <if test="areaName != null">
+                #{areaName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="offlineCount" resultType="integer">
+        select count(id) from d_offline_log
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="list!=null and list.size!=0">
+                and device_no in
+                <foreach collection="list" item="item" separator="," open="(" close=")" index="">
+                    #{item.deviceNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="deviceType!=null and deviceType!=''">
+                and device_type=#{deviceType}
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and collect_time>#{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime}>collect_time
+            </if>
+        </trim>
+    </select>
+</mapper>
